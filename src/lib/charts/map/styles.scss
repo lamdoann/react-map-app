@@ -1,0 +1,22 @@
+.map-chart {
+    .geo-group {
+        path {
+            fill: rgb(221, 221, 221);
+            stroke: #ffffff;
+            cursor: pointer;
+        }
+    }
+    .dot-group {
+        circle {
+            stroke: rgba(8, 81, 156, 0.6);
+            cursor: pointer;
+            transition: all 0.2s linear;
+            &:hover {
+                stroke-opacity: 0.5;
+                fill-opacity: 1;
+                stroke: #ffffff;
+                fill: rgba(8, 81, 156, 0.6);
+            }
+        }
+    }
+}
