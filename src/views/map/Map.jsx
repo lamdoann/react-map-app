@@ -4,20 +4,58 @@ import * as MapEffect from '../../effects/map.effect';
 
 import { MapChart } from '../../lib/charts';
 
+import './styles.scss';
+
+const DEFAUTL_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRjeukJGxqPfW0mtYudNih4gQH2uQdQCWYNcFfo9Ecvxcl3PYOvGxmSTVzJ6L4hFFnSIfI8XuY51Ygj/pub?gid=1829641480&single=true&output=csv';
+
 function Map() {
-    const [mapData, setMapData] = useState({ 
-        games: [], 
-        geo: { objects: { states: [] } } 
+    const [isLoading, setIsLoading] = useState(false);
+    const [url, setUrl] = useState(DEFAUTL_URL);
+    const [games, setGames] = useState([]);
+    const [geo, setGeo] = useState({ 
+        objects: { states: [] } 
     });
 
     useEffect(() => {
         MapEffect.fetchMapData().then((mapData) => {
-            setMapData(mapData);
+            setGeo(mapData);
         });
     }, []);
 
+    const handleLoad = async () => {
+        try {
+            setIsLoading(true);
+            const games = await MapEffect.fetchGames(url);
+            setGames(games);
+        } catch (err) {
+
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     return (
         <div>
+            <form className="map-form">
+                <div>
+                    <label htmlFor="url">
+                        Add game url:
+                    </label>
+                    <input 
+                        type="text"
+                        placehoder="input game url"
+                        value={url} 
+                        onChange={(e) => setUrl(e.target.value)} 
+                    />
+                </div>
+                <button 
+                    type="button" 
+                    onClick={handleLoad}
+                    disabled={isLoading}
+                >
+                    {isLoading ? 'Loading...' : 'Load'}
+                </button>
+            </form>
             <MapChart
                 id="map-chart-id"
                 height={700}
@@ -27,7 +65,10 @@ function Map() {
                     bottom: 40, 
                     left: 40 
                 }}
-                data={mapData}
+                data={{
+                    geo,
+                    games
+                }}
             />
         </div>
     );
