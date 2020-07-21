@@ -61,7 +61,7 @@ class MapChart extends BaseChart {
     drawDots() {
         const projection = d3.geoAlbersUsa()
             .translate([this.width / 2, this.height / 2])
-            .scale(500);
+            .scale(1280);
 
         const gamesData = this.data.games
             .filter((game) => game.lat !== 'NULL' || game.lon !== 'NULL' )
