@@ -72,7 +72,8 @@ class MapChart extends BaseChart {
                     origin,
                     coordinates
                 };
-            });
+            })
+            .filter((game) => game.coordinates !== null);
 
         const dots = this.dotGroup.selectAll('circle').data(gamesData);
         const enterDots = dots.enter().append('circle');
