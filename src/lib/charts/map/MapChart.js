@@ -61,12 +61,11 @@ class MapChart extends BaseChart {
     drawDots() {
         const projection = d3.geoAlbersUsa()
             .translate([this.width / 2, this.height / 2])
-            .scale(1280);
+            .scale(500);
 
         const gamesData = this.data.games
             .filter((game) => game.lat !== 'NULL' || game.lon !== 'NULL' )
             .map((game) => {
-                console.log('ameme', game);
                 const coordinates = projection([+game.lat, +game.lon]);
                 const origin = game;
                 return {
@@ -74,8 +73,6 @@ class MapChart extends BaseChart {
                     coordinates
                 };
             });
-
-        console.log('drawDots', gamesData);
 
         const dots = this.dotGroup.selectAll('circle').data(gamesData);
         const enterDots = dots.enter().append('circle');
