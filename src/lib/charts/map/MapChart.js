@@ -13,7 +13,7 @@ class MapChart extends BaseChart {
 
     draw() {
         super.draw();
-        
+
         this.svg.on('click', this.reset);
 
         this.zoom = d3.zoom()
@@ -66,7 +66,7 @@ class MapChart extends BaseChart {
         const gamesData = this.data.games
             .filter((game) => game.lat !== 'NULL' || game.lon !== 'NULL' )
             .map((game) => {
-                const coordinates = projection([+game.lat, +game.lon]);
+                const coordinates = projection([+game.lon, +game.lat]);
                 const origin = game;
                 return {
                     origin,
@@ -96,10 +96,10 @@ class MapChart extends BaseChart {
                     <div>
                         <p>
                             <b>GAME ID:</b> ${d.origin.game_id}
-                        </p>        
+                        </p>
                         <p>
                             <b>HOME vs AWAY:</b> ${d.origin.home_team} - ${d.origin.away_team}
-                        </p>        
+                        </p>
                     </div>
                 `;
                 const position = {
