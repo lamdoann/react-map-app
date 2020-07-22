@@ -4,7 +4,7 @@ import csv from 'csvtojson';
 
 export const fetchMapData = async () => {
     try {
-        const geo = await d3.json('https://unpkg.com/us-atlas@1/us/10m.json');
+        const geo = await d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-albers-10m.json');
         return geo;
     } catch (err) {
         throw err;

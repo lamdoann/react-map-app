@@ -13,7 +13,7 @@ function Map() {
     const [url, setUrl] = useState(DEFAUTL_URL);
     const [games, setGames] = useState([]);
     const [geo, setGeo] = useState({ 
-        objects: { states: [] } 
+        objects: { states: [], countries: [] } 
     });
 
     useEffect(() => {
@@ -58,12 +58,13 @@ function Map() {
             </form>
             <MapChart
                 id="map-chart-id"
-                height={700}
+                height={610}
+                width={975}
                 margin={{ 
-                    top: 40, 
-                    right: 40, 
-                    bottom: 40, 
-                    left: 40 
+                    top: 0, 
+                    right: 0, 
+                    bottom: 0, 
+                    left: 0 
                 }}
                 data={{
                     geo,

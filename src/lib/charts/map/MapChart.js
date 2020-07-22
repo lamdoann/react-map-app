@@ -7,20 +7,19 @@ import Tooltip from '../tooltip/Tooltip';
 class MapChart extends BaseChart {
     constructor(props) {
         super(props);
-        this.path = d3.geoPath();
         this.tooltip = new Tooltip();
     }
 
     draw() {
         super.draw();
 
-        this.svg.on('click', this.reset);
-
         this.zoom = d3.zoom()
             .scaleExtent([1, 8])
             .on('zoom', this.zoomed);
 
-        this.svg.call(this.zoom);
+        this.svg
+            .attr('viewBox', [0, 0, this.width, this.height])
+            .on('click', this.reset);
 
         this.path = d3.geoPath();
         this.geoGroup = this.createElement('g', 'geo-group', this.rootGroup);
@@ -28,11 +27,12 @@ class MapChart extends BaseChart {
 
         this.drawGeo();
         this.drawDots();
+
+        this.svg.call(this.zoom);
     }
 
     drawGeo() {
-        let geoStates = this.data.geo.objects ? this.data.geo.objects.states : [];
-        let features = topojson.feature(this.data.geo, geoStates).features || [];
+        const features = topojson.feature(this.data.geo, this.data.geo.objects.states).features || [];
 
         const paths = this.geoGroup.selectAll('path').data(features);
         const enterPaths = paths.enter().append('path');
@@ -48,7 +48,7 @@ class MapChart extends BaseChart {
     handleClick = (data) => {
         const [[x0, y0], [x1, y1]] = this.path.bounds(data);
         d3.event.stopPropagation();
-            this.svg.transition().duration(750).call(
+        this.svg.transition().duration(750).call(
             this.zoom.transform,
             d3.zoomIdentity
                 .translate(this.width / 2, this.height / 2)
