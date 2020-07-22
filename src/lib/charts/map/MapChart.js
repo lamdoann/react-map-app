@@ -87,7 +87,7 @@ class MapChart extends BaseChart {
             .transition()
             .delay((_, i) => 50 * i)
             .duration(500)
-            .attr('r', 4 / 3)
+            .attr('r', 1.5)
             .attr('fill-opacity', 0)
             .attr('stroke-opacity', 1);
 
