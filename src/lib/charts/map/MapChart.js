@@ -56,6 +56,7 @@ class MapChart extends BaseChart {
                 .translate(-(x0 + x1) / 2, -(y0 + y1) / 2),
             d3.mouse(this.svg.node())
         );
+        this.resizeDots();
     }
 
     drawDots() {
@@ -87,7 +88,7 @@ class MapChart extends BaseChart {
             .transition()
             .delay((_, i) => 50 * i)
             .duration(500)
-            .attr('r', 1.5)
+            .attr('r', 4)
             .attr('fill-opacity', 0)
             .attr('stroke-opacity', 1);
 
@@ -116,6 +117,16 @@ class MapChart extends BaseChart {
         dots.exit().remove();
     }
 
+    resizeDots = () => {
+        this.dotGroup.selectAll('circle')
+            .attr('r', 1);
+    }
+
+    resetDots = () => {
+        this.dotGroup.selectAll('circle')
+            .attr('r', 4);
+    }
+
     zoomed = () => {
         this.rootGroup.attr('transform', d3.event.transform);
         this.rootGroup.attr('stroke-width', 1 / d3.event.transform.k);
@@ -127,6 +138,7 @@ class MapChart extends BaseChart {
             d3.zoomIdentity,
             d3.zoomTransform(this.svg.node()).invert([this.width / 2, this.height / 2])
         );
+        this.resetDots();
     }
 }
 
