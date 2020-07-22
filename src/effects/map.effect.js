@@ -15,17 +15,26 @@ export const fetchGames = async (url) => {
     try {
         const response = await axios.get(url);
         const data = response.data;
-        const games = await new Promise((resolve, reject) => {
+        const dateParser = d3.timeParse('%m/%d/%y %H:%M');
+        let games = await new Promise((resolve, reject) => {
             let _games = [];
             csv()
                 .fromString(data)
                 .subscribe((json) => {
+                    if (json.creation_time) {
+                        const creation_time = dateParser(json.creation_time);
+                        json.creation_time = creation_time;
+                    } else {
+                        json.creation_time = new Date();
+                    }
                     _games.push(json); 
                 })
                 .on('done', () => {
                     resolve(_games);
                 });
         });
+
+        games = games.sort((a, b) => a.creation_time - b.creation_time);
 
         return games || [];
     } catch (err) {
